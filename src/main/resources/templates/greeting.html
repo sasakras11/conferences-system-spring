@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+<table>
+<th:block th:each="conference : ${conferences}">
+    <tr>
+        <td th:text="${conference.name}">...</td>
+        <td th:text="${conference.date}">...</td>
+    </tr>
+    <tr>
+        <td colspan="2" th:text="${conference.location.address}">...</td>
+    </tr>
+</th:block>
+</table>
+</body>
+</html>
