@@ -12,6 +12,7 @@ import com.conference.demo.service.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 
 
 @Service
@@ -51,5 +52,10 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new ValidationException("user is already registered");
         }
+    }
+
+    @Override
+    public Optional<User> login(User user) {
+        return Optional.empty();
     }
 }

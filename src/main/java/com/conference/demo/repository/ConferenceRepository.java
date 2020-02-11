@@ -14,6 +14,8 @@ public interface ConferenceRepository  extends PagingAndSortingRepository<Confer
 
     List<Conference> findAllByDateGreaterThan(Date date, Pageable pageable);
     List<Conference> findAllByDateLessThan(Date date,Pageable pageable);
+    int countByDateGreaterThan(Date date);
+    int countByDateLessThan(Date date);
 
 
 }

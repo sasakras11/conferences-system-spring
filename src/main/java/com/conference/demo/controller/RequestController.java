@@ -3,21 +3,21 @@ package com.conference.demo.controller;
 import com.conference.demo.Exception.ValidationException;
 import com.conference.demo.Util.Jsp.JspMap;
 import com.conference.demo.Util.Jsp.Stage;
+import com.conference.demo.entity.Conference;
+import com.conference.demo.entity.ConferenceGroup;
 import com.conference.demo.entity.User;
 import com.conference.demo.service.ConferenceService;
 import com.conference.demo.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
+import java.util.List;
 
 @Controller
 public class RequestController {
@@ -55,11 +55,25 @@ public class RequestController {
 
            session.setAttribute("user",user);
            model.addAttribute("conferences",conferenceService.findComingConferences(1));
+            model.addAttribute("pageNumber",1);
 
-           return JspMap.getJspUrl(user.getRole(), Stage.CONFERENCES_COMING);
+
+            return JspMap.getJspUrl(user.getRole(), Stage.CONFERENCES_COMING);
         } catch (ValidationException e) {
            model.addAttribute("error",e.getMessage());
            return "start";
         }
     }
+
+    @GetMapping(value = "/toPage")
+    public String toPage(Model model,@RequestParam("template") String template,@RequestParam("page") int page){
+
+         model.addAttribute("conferences", conferenceService.findComingConferences(page));
+         model.addAttribute("pageNumber",conferenceService.getSameOrValidPage(page, ConferenceGroup.COMING));
+
+         return template;
+    }
+
+
+
 }
