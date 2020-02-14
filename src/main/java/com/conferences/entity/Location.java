@@ -1,4 +1,4 @@
-package com.conference.demo.entity;
+package com.conferences.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
@@ -20,17 +21,17 @@ public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "location_id")
-    private  int id;
+    private Integer id;
 
 
     @NotEmpty
     @Column(name = "address")
-    private  String address;
+    @NotNull
+    private String address;
 
-    @NotEmpty
-    @Column(name = "max_people")
-    private int maxPeople;
-
+    @NotNull
+    @Column(name = "max_people", columnDefinition="int default 10")
+    private Integer maxPeople;
 
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "location")

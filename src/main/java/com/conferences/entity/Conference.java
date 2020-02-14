@@ -1,12 +1,10 @@
-package com.conference.demo.entity;
+package com.conferences.entity;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*; // wildcard
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 import java.util.List;
 
@@ -21,23 +19,27 @@ public class Conference {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "conference_id")
-    private int conferenceId;
+    private Integer conferenceId;
 
     @Column(name = "name")
+    @NotEmpty(message = "name of conference not provided")
     private String name;
 
     @Column(name = "date")
     @Temporal(TemporalType.DATE)
     private Date date;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
 
-    @ManyToMany
+    @ToString.Exclude
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "conference_id")
     private List<User> members;
 
-    @OneToMany
+    @ToString.Exclude
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Speech> speeches;
 }

@@ -1,6 +1,6 @@
-package com.conference.demo.repository;
+package com.conferences.repository;
 
-import com.conference.demo.entity.Location;
+import com.conferences.entity.Location;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

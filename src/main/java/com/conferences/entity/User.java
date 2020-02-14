@@ -1,9 +1,6 @@
-package com.conference.demo.entity;
+package com.conferences.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -21,29 +18,30 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id",unique = true,nullable = false)
-    private int userId;
+    @Column(name = "user_id", unique = true, nullable = false)
+    private Integer userId;
 
     @Column(name = "username")
-    @Length(min = 5, message = "Username must be at least 5 characters long")
+    @Length(min = 3, message = "Username must be at least 3 characters long")
     @NotEmpty(message = "Please provide your username")
     private String username;
 
-    @Length(min = 128, message = "password is not hashed")
+    @Length(min = 10, message = "password is not hashed")
     @NotEmpty(message = "Please provide your username")
     @Column(name = "password")
     private String password;
 
     @Column(name = "role")
+    @NotEmpty(message = "role is not provided")
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "visitors", fetch = FetchType.LAZY)
+    private List<Speech> speeches;
 
-    @ManyToMany(mappedBy = "visitors")
-    List<Speech> speeches;
-
-
-    @ManyToMany(mappedBy = "members")
-    List<Conference> conferences;
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY)
+    private List<Conference> conferences;
 
 }

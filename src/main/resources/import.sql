@@ -26,8 +26,8 @@ insert into conferences(name, date, location_id)VALUES ('CAR FEST',STR_TO_DATE('
 insert into conferences(name, date, location_id)VALUES ('WAR FEST',STR_TO_DATE('08/05/2018', '%d/%m/%Y'),1);
 insert into conferences(name, date, location_id)VALUES ('ASR FEST',STR_TO_DATE('08/05/2019', '%d/%m/%Y'),2);
 
-insert  into users(username, password, role) VALUES ('alex','2545a890988a69836e6c158e4d3ac2ba9386da87e0dfaac403c5734eef1269f4c145fb5ad71d25b65a1bd9aa9b3ebab5160a6eb7d66829e9dc0bf09c92367605','ADMIN');
-insert  into users(username, password, role) VALUES ('ivan','288f1cece25978fc5a60ed916067a97e7ba555019407cb0777f85ed637155a1ac00f961f2b0a21261c51c097d6df22ca0affc6d880a201adb1f950fd1756af13','SPEAKER');
+insert  into users(username, password, role) VALUES ('alex','$2a$10$P4QuV1idGovyyJPQ3VH.T.PdQ9MSbaKNSLpKh3eaeXQbbtqnRa4Xe','ADMIN');
+insert  into users(username, password, role) VALUES ('ivan','$2a$10$4PSZ.AyeMmoikQKQvZzmweG/8hnCbvJan0DqsMyRO9vWW24vL11Li','SPEAKER');
 insert  into users(username, password, role) VALUES ('ira','912e40340f0e2277ebbe8e91a008a53a42ea1560b425c0d698fe23f3ad600ba756c42cd6510288f10f9b9fb484ca61c482192b946902610258453877f4d5fab2','MODERATOR');
 insert  into users(username, password, role) VALUES ('olga','51788beddf9484765b50585dfb6dc55032f7b8b77cd7c844caacd326a347f4c9cb1cb2b1d4a979d4c301a5859706428c0693093ea2f1f6a2ff9021b7779bb94c','SPEAKER');
 insert  into users(username, password, role) VALUES ('egor','879cb7dc8e7417aeaa39d26dba985a7be8a36ae0fb66fba7f2988bb6480d28a0a645a8ae077df08c0bf7438976e3740115d19b2b103da7259239ca2c4df7d219','MODERATOR');

@@ -1,0 +1,26 @@
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:tiles="http://www.thymeleaf.org">
+<head>
+    <title>Title</title>
+</head>
+<body>
+<p th:text="@{${#httpServletRequest.requestURI}}"></p>
+
+
+
+<a href="?lang=en" th:text="#{label.en}" >English</a>|<a href="?lang=ua" th:text="#{label.ua}"></a>
+
+<h2 th:text="${error}">...</h2>
+<form action="/register" method="post">
+    <label for="username" th:text="#{label.username}"></label>
+    <input type="text" id="username" name="username">
+
+    <label for="password" th:text="#{label.password}"></label>
+    <input type="text" id="password" name="password">
+    <button type="submit" th:text="#{label.register}"></button>
+
+</form>
+</body>
+</html>

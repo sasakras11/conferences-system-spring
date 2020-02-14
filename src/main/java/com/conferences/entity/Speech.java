@@ -1,4 +1,4 @@
-package com.conference.demo.entity;
+package com.conferences.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,33 +21,33 @@ public class Speech {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "speech_id")
-    private int id;
+    private Integer id;
 
     @Column(name = "topic")
-    @Length(max = 200,min = 10)
+    @Length(max = 200, min = 10)
     private String topic;
 
     @Column(name = "suggested_topic")
-    @Length(max = 200,min = 10)
+    @Length(max = 200, min = 10)
     private String suggestedTopic;
 
     @Column(name = "start_hour")
-    private int startHour;
+    private Integer startHour;
 
     @Column(name = "end_hour")
-    private int endHour;
+    private Integer endHour;
 
     @JoinColumn(name = "user_id")
     @OneToOne(cascade = CascadeType.ALL)
     private User speaker;
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "speech_id")
     private List<User> visitors;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "conference_id")
     private Conference conference;
 
