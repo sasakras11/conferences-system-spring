@@ -11,4 +11,7 @@ public interface RatingRepository extends JpaRepository<Rating,Integer> {
 
     List<Rating> findAll();
 
+
+
+
 }

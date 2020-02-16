@@ -1,9 +1,12 @@
 package com.conferences.service.impl;
 
 import com.conferences.entity.Rating;
+
 import com.conferences.repository.RatingRepository;
 import com.conferences.service.RatingService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +14,12 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class RatingServiceImpl implements RatingService {
+public class RatingServiceImpl extends AbstractService<Rating,RatingRepository> implements RatingService {
 
-    private RatingRepository ratingRepository;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RatingServiceImpl.class);
+
+    private final RatingRepository ratingRepository;
 
     @Override
     public List<Rating> findAll() {
@@ -21,8 +27,31 @@ public class RatingServiceImpl implements RatingService {
         return ratingRepository.findAll();
     }
 
-    public void save(List<Rating> rating) {
+    @Override
+    public void save(Rating speakerRating) {
 
-        ratingRepository.saveAll(rating);
+        ratingRepository.save(speakerRating);
+        LOGGER.info(String.format("saved rating with id [%o] , speaker [%s], and rating mark - [%o]",
+                speakerRating.getId(),speakerRating.getUser(),speakerRating.getRating()));
+
+
+
     }
+
+    @Override
+    public void changeSpeakerRating(String  ratingId,String ratingMark) {
+
+        int ratingID = getParsedOctalNumberOrRedirect(ratingId,"rating");
+        int mark = getParsedOctalNumberOrRedirect(ratingMark,"rating");
+
+        Rating rating = findByIdIfPresentOrRedirect(ratingID,ratingRepository,"rating");
+        rating.setRating(mark);
+        ratingRepository.save(rating);
+
+        LOGGER.info(String.format("changed rating with id [%o] .New rating mark value - [%o]",ratingID,mark));
+
+
+
+    }
+
 }

@@ -4,7 +4,6 @@ package com.conferences.controller;
 import com.conferences.entity.Conference;
 import com.conferences.entity.Speech;
 import com.conferences.entity.User;
-import com.conferences.repository.RatingRepository;
 import com.conferences.service.ConferenceService;
 import com.conferences.service.RatingService;
 import com.conferences.service.SpeechService;
@@ -140,9 +139,26 @@ public class EditController {
         HttpSession session = attr.getRequest().getSession();
         User user = (User) session.getAttribute("user");
 
-        modelAndView.addObject("rating", ratingService.findAll());
+        modelAndView.addObject("rating",ratingService.findAll());
         modelAndView.setViewName(user.getRole().name().toLowerCase() + "/rating");
 
         return modelAndView;
+    }
+
+    @RequestMapping(value = {"/editRating"})
+    public ModelAndView editRating(@RequestParam("ratingId") String ratingId,@RequestParam("ratingMark") String ratingMark){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("rating", ratingService.findAll());
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession();
+        User user = (User) session.getAttribute("user");
+
+        ratingService.changeSpeakerRating(ratingId,ratingMark);
+
+          modelAndView.setViewName(user.getRole().name().toLowerCase() + "/rating");
+
+
+        return modelAndView;
+
     }
 }

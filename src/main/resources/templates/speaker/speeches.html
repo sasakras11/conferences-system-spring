@@ -50,7 +50,10 @@
             </span>
 
             </td>
-            <td> <a th:href="@{/editSpeechPage(speechId=${speech.id})}" >edit</a></td>
+            <td>
+                <span th:if="${session.user.username.equals(speech.speaker.username)}">
+                    <a th:href="@{/editSpeechPage(speechId=${speech.id})}" >edit</a></span>
+            </td>
         </tr>
     </th:block>
     </tbody>
