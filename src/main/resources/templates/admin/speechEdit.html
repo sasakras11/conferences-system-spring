@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="#" th:action="@{/editSpeech}">
+    <input type="hidden" id="id" name = "id" th:value="${speech.id}"/>
+    <input type="text" id="topic" name = "topic" th:placeholder="${speech.topic}"/>
+    <input type="text" id="suggestedTopic"  name = "suggestedTopic" th:placeholder="${speech.suggestedTopic}"/>
+    <input type="text" id="startHour" name = "startHour"  th:placeholder="${speech.startHour}"/>
+    <input type="text" id="endHour"  name = "endHour" th:placeholder="${speech.endHour}"/>
+    <input type="submit">
+</form>
+</body>
+</html>

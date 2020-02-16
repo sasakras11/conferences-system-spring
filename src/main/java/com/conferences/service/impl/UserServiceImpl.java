@@ -2,16 +2,18 @@ package com.conferences.service.impl;
 
 
 import com.conferences.entity.Role;
+import com.conferences.entity.Speech;
 import com.conferences.entity.User;
 import com.conferences.exception.ValidationException;
 import com.conferences.repository.UserRepository;
 import com.conferences.service.UserService;
-import com.conferences.service.utils.Validator;
+import com.conferences.service.Validator;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -48,5 +50,16 @@ public class UserServiceImpl implements UserService {
 
         return loggedIn ? byUsername : Optional.empty();
     }
+
+    @Override
+    public void save(User user) {
+        userRepository.save(user);
+    }
+
+    @Override
+    public void deleteReservation(int userId,int speechId) {
+    userRepository.deleteReservation(userId,speechId);
+    }
+
 
 }

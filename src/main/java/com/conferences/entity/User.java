@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 
@@ -32,16 +33,16 @@ public class User {
     private String password;
 
     @Column(name = "role")
-    @NotEmpty(message = "role is not provided")
+    @NotNull(message = "role is not provided")
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @ToString.Exclude
-    @ManyToMany(mappedBy = "visitors", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "visitors", fetch = FetchType.LAZY,cascade=CascadeType.ALL)
     private List<Speech> speeches;
 
     @ToString.Exclude
-    @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY,cascade=CascadeType.ALL)
     private List<Conference> conferences;
 
 }

@@ -1,8 +1,10 @@
 package com.conferences.controller;
 
+import com.conferences.entity.Role;
 import com.conferences.entity.User;
 import com.conferences.exception.ValidationException;
 import com.conferences.service.ConferenceService;
+import com.conferences.service.SpeechService;
 import com.conferences.service.UserService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -34,17 +36,17 @@ public class AuthorizationController {
     private final ConferenceService conferenceService;
 
 
-
     @GetMapping(value = {"/"})
     public ModelAndView login() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("start");
 
+
         return modelAndView;
     }
 
     @GetMapping(value = {"/login"})
-    public ModelAndView getBackPage(){
+    public ModelAndView getBackPage() {
         ModelAndView modelAndView = new ModelAndView();
         RequestAttributes requestAttributes = RequestContextHolder
                 .currentRequestAttributes();
@@ -54,11 +56,11 @@ public class AuthorizationController {
 
         User user = (User) request.getSession().getAttribute("user");
 
-        if(user!=null){
-            modelAndView.addObject("conferences",conferenceService.findComingConferences(1));
-            modelAndView.addObject("pageNum",1);
-            System.out.println(user.getRole().name().toLowerCase()+"/conferences");
-            modelAndView.setViewName(user.getRole().name().toLowerCase()+"/conferences");
+        if (user != null) {
+            modelAndView.addObject("conferences", conferenceService.findComingConferences(1));
+            modelAndView.addObject("pageNum", 1);
+            System.out.println(user.getRole().name().toLowerCase() + "/conferences");
+            modelAndView.setViewName(user.getRole().name().toLowerCase() + "/conferences");
             return modelAndView;
         }
 
@@ -66,8 +68,23 @@ public class AuthorizationController {
         return modelAndView;
 
     }
+    @GetMapping(value = {"/conferences"})
+    public ModelAndView conferencePage(){
+        ModelAndView modelAndView = new ModelAndView();
 
-    @RequestMapping(value = {"/login"})
+        RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
+        ServletRequestAttributes attributes = (ServletRequestAttributes) requestAttributes;
+        HttpServletRequest request = attributes.getRequest();
+        modelAndView.addObject("conferences", conferenceService.findComingConferences(1));
+        modelAndView.addObject("pageNumber", 1);
+        User user = (User) request.getSession().getAttribute("user");
+
+        modelAndView.setViewName(user.getRole().name().toLowerCase()+"/conferences");
+        return modelAndView;
+
+    }
+
+    @PostMapping(value = {"/conferences"})
     public ModelAndView authorization(@RequestParam("username") String username, @RequestParam("password") String password) {
         ModelAndView modelAndView = new ModelAndView();
         Optional<User> user = userService.login(username, password);
@@ -83,12 +100,12 @@ public class AuthorizationController {
 
             modelAndView.setViewName(user.get().getRole().name().toLowerCase() + "/conferences");
 
-            LOGGER.info(format("user with username [%s] and password [%s]} logged in ",username,password));
+            LOGGER.info(format("user with username [%s] and password [%s]} logged in ", username, password));
 
         } else {
             modelAndView.addObject("error", "wrong credentials");
             modelAndView.setViewName("start");
-            LOGGER.info(format("user with username [%s] and password [%s] failed in logging in  ",username,password));
+            LOGGER.info(format("user with username [%s] and password [%s] failed in logging in  ", username, password));
         }
         return modelAndView;
     }
@@ -101,7 +118,7 @@ public class AuthorizationController {
         return modelAndView;
     }
 
-    @RequestMapping( value = {"/register"})
+    @RequestMapping(value = {"/register"})
     public ModelAndView registration(@RequestParam("username") String username, @RequestParam("password") String password) {
         ModelAndView modelAndView = new ModelAndView();
         try {
@@ -112,11 +129,11 @@ public class AuthorizationController {
 
             ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
             HttpSession session = attr.getRequest().getSession();
-
             session.setAttribute("user", user);
+
             modelAndView.setViewName(user.getRole().name().toLowerCase() + "/conferences");
 
-            LOGGER.info(format("user with username [%s] and password [%s] registered successfully",username,password));
+            LOGGER.info(format("user with username [%s] and password [%s] registered successfully", username, password));
 
             return modelAndView;
         } catch (ValidationException e) {

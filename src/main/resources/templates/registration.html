@@ -4,23 +4,44 @@
       xmlns:tiles="http://www.thymeleaf.org">
 <head>
     <title>Title</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="start.css">
 </head>
 <body>
-<p th:text="@{${#httpServletRequest.requestURI}}"></p>
-
-
-
+<h2 th:text="${error}">...</h2>
 <a href="?lang=en" th:text="#{label.en}" >English</a>|<a href="?lang=ua" th:text="#{label.ua}"></a>
 
-<h2 th:text="${error}">...</h2>
-<form action="/register" method="post">
-    <label for="username" th:text="#{label.username}"></label>
-    <input type="text" id="username" name="username">
+<div id="login">
 
-    <label for="password" th:text="#{label.password}"></label>
-    <input type="text" id="password" name="password">
-    <button type="submit" th:text="#{label.register}"></button>
+    <h3 class="text-center text-white pt-5">Login form</h3>
+    <div class="container">
+        <div id="login-row" class="row justify-content-center align-items-center">
+            <div id="login-column" class="col-md-6">
+                <div id="login-box" class="col-md-12">
+                    <form id="login-form" class="form" th:action="@{/register}" method="post">
+                        <h3 class="text-center text-info" th:text="#{label.register}"></h3>
+                        <div class="form-group">
+                            <label for="username" th:text="#{label.username}" class="text-info" ></label><br>
+                            <input type="text" name="username" id="username" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="password" th:text="#{label.password}" class="text-info"></label><br>
+                            <input type="text" name="password" id="password" class="form-control">
+                        </div>
+                        <div class="form-group">
 
-</form>
+                            <input type="submit" th:value="#{label.confirm}" class="btn btn-info btn-md">
+                        </div>
+                        <div id="register-link" class="text-right">
+                            <a th:href="@{/}" th:text="#{label.login}" class="text-info"></a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

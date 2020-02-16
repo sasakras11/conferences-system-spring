@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Title</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="conferences.css">
+
+</head>
+<body>
+<a href="/login?lang=en" th:text="#{label.en}" >English</a>|<a href="/login?lang=ua" th:text="#{label.ua}"></a>
+<section id="tabs" class="project-tab">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <nav>
+                    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" role="tab" aria-controls="nav-home" aria-selected="true"  th:href="@{/coming}" th:text="#{label.coming}"></a>
+                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" role="tab" aria-controls="nav-profile" aria-selected="false" th:href="@{/finished}" th:text="#{label.finished}"></a>
+                        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" role="tab" aria-controls="nav-contact" aria-selected="false"  th:href="@{/userSpeeches}" th:text="#{label.your}" ></a>
+                    </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <table class="table" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>name</th>
+                                <th>date</th>
+                                <th>address</th>
+                                <th></th>
+                                <th></th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <th:block th:each="conference : ${conferences}">
+
+                                <tr>
+                                    <td th:text="${conference.conferenceId}">...</td>
+                                    <td th:text="${conference.name}">...</td>
+                                    <td th:text="${conference.date}">...</td>
+                                    <td colspan="2" th:text="${conference.location.address}">...</td>
+                                    <td>
+                                        <a th:href="@{/editConferencePage(id=${conference.conferenceId})}" th:text="#{label.edit}"></a>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/speeches(conferenceId=${conference.conferenceId})}" th:text="#{label.speeches}">speeches</a>
+                                    </td>
+                                </tr>
+                            </th:block>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="text-center fixed-bottom" style="margin-bottom: 250px">
+    <form  th:action="@{/pageOfComing}"  method="get">
+        <div class="form-group">
+            <input type="hidden" name="template" id="template" value="moderator/conferences">
+
+            <label class="text-info" for="page" th:text="#{label.page}"></label>
+            <input type="text" id = "page" name="page">
+        </div>
+        <input type="submit" class="btn btn-info btn-md" th:value="#{label.lookPage}">
+    </form>
+</div>
+</body>
+</html>
+
+
+

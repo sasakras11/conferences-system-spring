@@ -28,12 +28,12 @@ insert into conferences(name, date, location_id)VALUES ('ASR FEST',STR_TO_DATE('
 
 insert  into users(username, password, role) VALUES ('alex','$2a$10$P4QuV1idGovyyJPQ3VH.T.PdQ9MSbaKNSLpKh3eaeXQbbtqnRa4Xe','ADMIN');
 insert  into users(username, password, role) VALUES ('ivan','$2a$10$4PSZ.AyeMmoikQKQvZzmweG/8hnCbvJan0DqsMyRO9vWW24vL11Li','SPEAKER');
-insert  into users(username, password, role) VALUES ('ira','912e40340f0e2277ebbe8e91a008a53a42ea1560b425c0d698fe23f3ad600ba756c42cd6510288f10f9b9fb484ca61c482192b946902610258453877f4d5fab2','MODERATOR');
+insert  into users(username, password, role) VALUES ('ira','$2a$10$9mNR2BLYAIikbBWnlMGL5e9Cgz9yjeXR.kSVxfMyhL8NX2yCEjycu','MODERATOR');
 insert  into users(username, password, role) VALUES ('olga','51788beddf9484765b50585dfb6dc55032f7b8b77cd7c844caacd326a347f4c9cb1cb2b1d4a979d4c301a5859706428c0693093ea2f1f6a2ff9021b7779bb94c','SPEAKER');
 insert  into users(username, password, role) VALUES ('egor','879cb7dc8e7417aeaa39d26dba985a7be8a36ae0fb66fba7f2988bb6480d28a0a645a8ae077df08c0bf7438976e3740115d19b2b103da7259239ca2c4df7d219','MODERATOR');
 insert  into users(username, password, role) VALUES ('maxim','85eaa3a67f815fc8243475ee674d77173f4647e6388bb0bc9d80f381214e3613bac01055cc5b318313c9583ecfce0c498dbc6ddb1dfd6f3857bac60c47cad11b','VISITOR');
 insert  into users(username, password, role) VALUES ('david','e91a8507b5df290a4632359fbf52bc98ea1825cc0c78b3b988d85b55467ee5659bb6d185ae5905471c3334f1b72b7f00fa27f95053a93de53fc7bdba2dfcd9a9','VISITOR');
-insert  into users(username, password, role) VALUES ('dima','3876e1e408ec4c6f7766300e7875a1a8ad69c910182071c205895297a9b24b4c8309abda2837158324c2cadf474d53b8daaa42e887d7d1a979753925fc952c3c','VISITOR');
+insert  into users(username, password, role) VALUES ('dima','$2a$10$zO8GwYAJwSPTIckkjw7ESuOQ89ElJ3Db/yH9M4lIC18nsIRltOPGK','VISITOR');
 insert  into users(username, password, role) VALUES ('katerina','ac245b3f84ed62649cc4cea19bdffe865c6196f95a78a5a5072a6ea132eca8ba871b6add43141086567569068b61ca33c23b2f9aa29d58ef976ee6140c6c2e29','VISITOR');
 
 insert into speeches(topic, suggested_topic, start_hour, end_hour, user_id, conference_id) values ('vlada Ukrainy','',2,5,2,1);
