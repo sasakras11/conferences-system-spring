@@ -25,11 +25,9 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceImplTest {
 
-    private static final String ENCODED_PASSWORD = "encoded_password";
     private static final String PASSWORD = "password";
     private static final String USERNAME = "username";
-    private static final String INCORRECT_PASSWORD = "INCORRECT_PASSWORD";
-    private static final String ENCODED_INCORRECT_PASSWORD = "encode_incorrect_password";
+
     private static final User USER =
             User.builder()
                     .role(Role.VISITOR)
