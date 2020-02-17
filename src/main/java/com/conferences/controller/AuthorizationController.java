@@ -1,10 +1,8 @@
 package com.conferences.controller;
 
-import com.conferences.entity.Role;
 import com.conferences.entity.User;
 import com.conferences.exception.ValidationException;
 import com.conferences.service.ConferenceService;
-import com.conferences.service.SpeechService;
 import com.conferences.service.UserService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -57,9 +55,8 @@ public class AuthorizationController {
         User user = (User) request.getSession().getAttribute("user");
 
         if (user != null) {
-            modelAndView.addObject("conferences", conferenceService.findComingConferences(1));
+            modelAndView.addObject("conferences", conferenceService.findComingConferences("1"));
             modelAndView.addObject("pageNum", 1);
-            System.out.println(user.getRole().name().toLowerCase() + "/conferences");
             modelAndView.setViewName(user.getRole().name().toLowerCase() + "/conferences");
             return modelAndView;
         }
@@ -75,7 +72,7 @@ public class AuthorizationController {
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
         ServletRequestAttributes attributes = (ServletRequestAttributes) requestAttributes;
         HttpServletRequest request = attributes.getRequest();
-        modelAndView.addObject("conferences", conferenceService.findComingConferences(1));
+        modelAndView.addObject("conferences", conferenceService.findComingConferences("1"));
         modelAndView.addObject("pageNumber", 1);
         User user = (User) request.getSession().getAttribute("user");
 
@@ -95,7 +92,7 @@ public class AuthorizationController {
             ServletRequestAttributes attributes = (ServletRequestAttributes) requestAttributes;
             HttpServletRequest request = attributes.getRequest();
             request.getSession().setAttribute("user", user.get());
-            modelAndView.addObject("conferences", conferenceService.findComingConferences(1));
+            modelAndView.addObject("conferences", conferenceService.findComingConferences("1"));
             modelAndView.addObject("pageNum", 1);
 
             modelAndView.setViewName(user.get().getRole().name().toLowerCase() + "/conferences");
@@ -124,7 +121,7 @@ public class AuthorizationController {
         try {
             User user = userService.register(username, password);
 
-            modelAndView.addObject("conferences", conferenceService.findComingConferences(1));
+            modelAndView.addObject("conferences", conferenceService.findComingConferences("1"));
             modelAndView.addObject("pageNumber", 1);
 
             ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();

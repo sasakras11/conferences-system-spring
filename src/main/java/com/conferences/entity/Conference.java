@@ -2,6 +2,7 @@ package com.conferences.entity;
 
 
 import lombok.*; // wildcard
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -22,6 +23,7 @@ public class Conference {
     private Integer conferenceId;
 
     @Column(name = "name")
+    @Length(max = 200, min = 4)
     @NotEmpty(message = "name of conference not provided")
     private String name;
 

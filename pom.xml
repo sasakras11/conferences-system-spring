@@ -9,11 +9,11 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.conference</groupId>
-	<artifactId>demo</artifactId>
+	<artifactId>conferences</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>demo</name>
+	<name>conferences</name>
 	<packaging>war</packaging>
-	<description>Demo project for Spring Boot</description>
+	<description>conferences project for spring boot</description>
 
 	<properties>
 		<java.version>1.8</java.version>

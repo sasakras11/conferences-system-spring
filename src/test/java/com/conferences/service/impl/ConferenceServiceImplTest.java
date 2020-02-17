@@ -50,7 +50,7 @@ public class ConferenceServiceImplTest {
         when(conferenceRepository.countByDateGreaterThan(any())).thenReturn(10);
         when(conferenceRepository.countByDateLessThan(any())).thenReturn(10);
 
-        Assert.assertEquals(3, conferenceService.getSameOrValidPage(5, ConferenceGroup.COMING));
+        Assert.assertEquals(3, conferenceService.getSameOrValidPage("5", ConferenceGroup.COMING));
         verify(conferenceRepository).countByDateGreaterThan(any());
     }
     @Test
@@ -59,7 +59,7 @@ public class ConferenceServiceImplTest {
         when(conferenceRepository.countByDateGreaterThan(any())).thenReturn(10);
         when(conferenceRepository.countByDateLessThan(any())).thenReturn(10);
 
-        Assert.assertEquals(1, conferenceService.getSameOrValidPage(-1, ConferenceGroup.COMING));
+        Assert.assertEquals(1, conferenceService.getSameOrValidPage("-1", ConferenceGroup.COMING));
         verify(conferenceRepository).countByDateGreaterThan(any());
     }
 

@@ -1,26 +1,24 @@
 package com.conferences.service.impl;
 
 import com.conferences.entity.Speech;
-import com.conferences.entity.User;
 import com.conferences.repository.SpeechRepository;
 import com.conferences.service.SpeechService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
 
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @Service
-public class SpeechServiceImpl implements SpeechService {
+public class SpeechServiceImpl extends AbstractService<Speech,SpeechRepository>implements SpeechService {
 
 
     private final SpeechRepository speechRepository;
 
     @Override
-    public Optional<Speech> findById(int id) {
-        return speechRepository.findById(id);
+    public Speech findById(String id) {
+        int validatedId = getParsedOctalNumberOrRedirect(id,"speeches");
+        return findByIdIfPresentOrRedirect(validatedId,speechRepository,"speeches");
     }
 
     @Override

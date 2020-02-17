@@ -15,14 +15,13 @@ public class DataParser {
     private DataParser(){
 
     }
-    public static Date toDate(String value){
+    public static Date toDate(String value,String pathIfExceptionHappened){
 
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
             return dateFormat.parse(value);
         } catch (ParseException e) {
-
             LOGGER.warn(String.format("date [%s]  has wrong format,Should be yyyy-MM-dd", value));
             throw new ValidationException(String.format("date [%s]  has wrong format,Should be yyyy-MM-dd", value));
 

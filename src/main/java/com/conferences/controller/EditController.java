@@ -1,13 +1,11 @@
 package com.conferences.controller;
 
 
-import com.conferences.entity.Conference;
 import com.conferences.entity.Speech;
 import com.conferences.entity.User;
 import com.conferences.service.ConferenceService;
 import com.conferences.service.RatingService;
 import com.conferences.service.SpeechService;
-import com.conferences.util.DataParser;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,14 +33,14 @@ public class EditController {
 
 
     @GetMapping(value = {"/editConferencePage"})
-    public ModelAndView editConferencePage(@RequestParam("id") int id) {
+    public ModelAndView editConferencePage(@RequestParam("id") String id) {
 
 
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession();
         User user = (User) session.getAttribute("user");
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("conference", conferenceService.findById(id).get());
+        modelAndView.addObject("conference", conferenceService.findById(id));
         modelAndView.setViewName(user.getRole().name().toLowerCase() + "/conferenceEdit");
 
         return modelAndView;
@@ -50,34 +48,19 @@ public class EditController {
 
 
     @RequestMapping(value = {"/edit"})
+    //TODO move logic to service and if exception happened move back to conference list and log
     public ModelAndView editConference(@RequestParam(value = "date") String date,
-                                       @RequestParam(value = "name") String name, @RequestParam("conferenceId") int id) {
+                                       @RequestParam(value = "name") String name, @RequestParam("conferenceId") String id) {
         ModelAndView modelAndView = new ModelAndView();
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession();
         User user = (User) session.getAttribute("user");
 
 
-        if (name.length() > 0 || date == null) {
-            modelAndView = new ModelAndView();
-            Conference conference = conferenceService.findById(id).get();
-            conference.setDate(DataParser.toDate(date));
-            conference.setName(name);
+        conferenceService.editConference(name, date, id);
+        modelAndView.addObject("conferences", conferenceService.findComingConferences("1"));
+        modelAndView.setViewName(user.getRole().name().toLowerCase() + "/conferences");
 
-            conferenceService.edit(conference);
-            user = (User) session.getAttribute("user");
-            modelAndView.addObject("pageNum", 1);
-            modelAndView.setViewName(user.getRole().name().toLowerCase() + "/conferences");
-            modelAndView.addObject("conferences", conferenceService.findComingConferences(1));
-
-            LOGGER.info(String.format("user [%s] edited conference with id %s", user.getUserId(), id));
-        } else {
-            modelAndView.addObject("conference", conferenceService.findById(id).get());
-
-            modelAndView.setViewName(user.getRole().name().toLowerCase() + "/conferenceEdit");
-            LOGGER.info(String.format("user [%s] was not successfully edited conference with id %s", user.getUserId(), id));
-
-        }
         return modelAndView;
     }
 
@@ -88,18 +71,17 @@ public class EditController {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession();
         User user = (User) session.getAttribute("user");
-        int id = Integer.parseInt(speechId);
-        Speech speech = speechService.findById(id).get();
+        Speech speech = speechService.findById(speechId);
 
         modelAndView.addObject("speech", speech);
 
-
+        modelAndView.addObject("pageNum", 1);
         modelAndView.setViewName(user.getRole().name().toLowerCase() + "/speechEdit");
         return modelAndView;
 
     }
 
-    @RequestMapping(value = "/editSpeech")
+    @RequestMapping(value = "/editSpeech") //TODO move logic to service
     public ModelAndView editSpeech(@RequestParam(value = "topic", required = false) Optional<String> topic,
                                    @RequestParam(value = "startHour", required = false) Optional<String> startHour,
                                    @RequestParam(value = "endHour", required = false) Optional<String> endHour,
@@ -109,7 +91,7 @@ public class EditController {
         ModelAndView modelAndView = new ModelAndView();
 
 
-        Speech speech = speechService.findById(Integer.parseInt(id)).get();
+        Speech speech = speechService.findById(id);
         speech.setSuggestedTopic(suggestedTopic);
         topic.ifPresent(speech::setTopic);
         startHour.ifPresent(x -> speech.setStartHour(Integer.parseInt(startHour.get())));
@@ -139,23 +121,23 @@ public class EditController {
         HttpSession session = attr.getRequest().getSession();
         User user = (User) session.getAttribute("user");
 
-        modelAndView.addObject("rating",ratingService.findAll());
+        modelAndView.addObject("rating", ratingService.findAll());
         modelAndView.setViewName(user.getRole().name().toLowerCase() + "/rating");
 
         return modelAndView;
     }
 
     @RequestMapping(value = {"/editRating"})
-    public ModelAndView editRating(@RequestParam("ratingId") String ratingId,@RequestParam("ratingMark") String ratingMark){
+    public ModelAndView editRating(@RequestParam("ratingId") String ratingId, @RequestParam("ratingMark") String ratingMark) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("rating", ratingService.findAll());
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession();
         User user = (User) session.getAttribute("user");
 
-        ratingService.changeSpeakerRating(ratingId,ratingMark);
+        ratingService.changeSpeakerRating(ratingId, ratingMark);
 
-          modelAndView.setViewName(user.getRole().name().toLowerCase() + "/rating");
+        modelAndView.setViewName(user.getRole().name().toLowerCase() + "/rating");
 
 
         return modelAndView;

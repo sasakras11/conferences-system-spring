@@ -8,14 +8,15 @@ import java.util.Optional;
 
 public interface ConferenceService {
 
-    List<Conference> findComingConferences(int page);
+    List<Conference> findComingConferences(String page);
 
-    List<Conference> findFinishedConferences(int page);
+    List<Conference> findFinishedConferences(String page);
 
-    void edit(Conference conference);
 
-    int getSameOrValidPage(int page, ConferenceGroup conferenceGroup);
+    int getSameOrValidPage(String page, ConferenceGroup conferenceGroup);
 
-    Optional<Conference> findById(int id);
+    Conference findById(String id);
+
+    void editConference(String name,String date,String conferenceId);
 
 }

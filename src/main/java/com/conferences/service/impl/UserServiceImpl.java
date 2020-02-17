@@ -2,8 +2,8 @@ package com.conferences.service.impl;
 
 
 import com.conferences.entity.Role;
-import com.conferences.entity.Speech;
 import com.conferences.entity.User;
+import com.conferences.exception.UserIsRegisteredException;
 import com.conferences.exception.ValidationException;
 import com.conferences.repository.UserRepository;
 import com.conferences.service.UserService;
@@ -13,13 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends AbstractService<User,UserRepository>implements UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -35,7 +34,7 @@ public class UserServiceImpl implements UserService {
             return user;
 
         } else {
-            throw new ValidationException("user is already registered");
+            throw new UserIsRegisteredException("registration");
         }
     }
 
@@ -57,8 +56,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteReservation(int userId,int speechId) {
-    userRepository.deleteReservation(userId,speechId);
+    public void deleteReservation(String userId,String speechId) {
+        int userID = getParsedOctalNumberOrRedirect(userId,"userSpeeches");
+        int speechID = getParsedOctalNumberOrRedirect(speechId,"userSpeeches");
+        userRepository.deleteReservation(userID,speechID);
     }
 
 

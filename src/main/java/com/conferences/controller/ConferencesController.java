@@ -26,9 +26,8 @@ public class ConferencesController {
     public ModelAndView toPage(@RequestParam("template") String template, @RequestParam("page") String page) {
 
         ModelAndView modelAndView = new ModelAndView();
-        int validatedPageNumber = page.chars().allMatch(Character::isDigit) && page.length() > 0 ? Integer.parseInt(page) : 1;
-        modelAndView.addObject("pageNumber", conferenceService.getSameOrValidPage(validatedPageNumber, ConferenceGroup.COMING));
-        modelAndView.addObject("conferences", conferenceService.findComingConferences(validatedPageNumber));
+        modelAndView.addObject("pageNumber", conferenceService.getSameOrValidPage(page, ConferenceGroup.COMING));
+        modelAndView.addObject("conferences", conferenceService.findComingConferences(page));
         modelAndView.setViewName(template);
 
         return modelAndView;
@@ -37,9 +36,8 @@ public class ConferencesController {
     public ModelAndView toFinishedConferencesPage(@RequestParam("template") String template,@RequestParam("page") String  page){
 
         ModelAndView modelAndView = new ModelAndView();
-        int validatedPageNumber = page.chars().allMatch(Character::isDigit) && page.length() > 0 ? Integer.parseInt(page) : 1;
-        modelAndView.addObject("pageNumber", conferenceService.getSameOrValidPage(validatedPageNumber, ConferenceGroup.FINISHED));
-        modelAndView.addObject("conferences", conferenceService.findFinishedConferences(validatedPageNumber));
+        modelAndView.addObject("pageNumber", conferenceService.getSameOrValidPage(page, ConferenceGroup.FINISHED));
+        modelAndView.addObject("conferences", conferenceService.findFinishedConferences(page));
         modelAndView.setViewName(template);
 
         return modelAndView;
@@ -52,7 +50,7 @@ public class ConferencesController {
        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
        HttpSession session = attr.getRequest().getSession();
           User user = (User) session.getAttribute("user");
-       modelAndView.addObject("conferences",conferenceService.findFinishedConferences(1));
+       modelAndView.addObject("conferences",conferenceService.findFinishedConferences("1"));
        modelAndView.addObject("pageNum",1);
 
        modelAndView.setViewName(user.getRole().name().toLowerCase()+"/finishedConferences");
@@ -67,7 +65,7 @@ public class ConferencesController {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession();
         User user = (User) session.getAttribute("user");
-        modelAndView.addObject("conferences", conferenceService.findComingConferences(1));
+        modelAndView.addObject("conferences", conferenceService.findComingConferences("1"));
         modelAndView.addObject("pageNum", 1);
         session.setAttribute("conferencesType", "/pageOfComing");
 

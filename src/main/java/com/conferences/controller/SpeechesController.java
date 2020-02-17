@@ -51,7 +51,7 @@ public class SpeechesController {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         User user = (User) attr.getRequest().getSession().getAttribute("user");
         try {
-            Speech speech = speechService.findById(Integer.parseInt(speechId)).get();
+            Speech speech = speechService.findById(speechId);
             List<User> visitors  = speech.getVisitors();
             visitors.add(user);
             speechService.save(speech);
@@ -63,7 +63,7 @@ public class SpeechesController {
 
         } catch (Exception e) {
             LOGGER.warn(String.format("Exception when reserving place in speech with id %s", speechId));
-            modelAndView.addObject("conferences", conferenceService.findComingConferences(1));
+            modelAndView.addObject("conferences", conferenceService.findComingConferences("1"));
             modelAndView.addObject("pageNumber", 1);
 
             modelAndView.setViewName(user.getRole().name().toLowerCase() + "/conferences");
@@ -98,8 +98,7 @@ public class SpeechesController {
         User user = (User) session.getAttribute("user");
 
 
-        int speechID= Integer.parseInt(speechId);
-         userService.deleteReservation(user.getUserId(),speechID);
+         userService.deleteReservation(user.getUserId().toString(),speechId);
 
         modelAndView.addObject("speeches",speechService.findAllByUserId(user.getUserId()));
         modelAndView.setViewName("userSpeeches");

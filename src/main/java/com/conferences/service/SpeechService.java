@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface SpeechService {
 
-    Optional<Speech> findById(int id);
+    Speech findById(String id);
 
     void save(Speech speech);
 
