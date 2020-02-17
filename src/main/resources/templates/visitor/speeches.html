@@ -1,10 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <body>
 
+<p th:text="#{label.language}"></p>
+<a href="?lang=en" th:text="#{label.en}" >English</a>|<a href="?lang=ua" th:text="#{label.ua}"></a>
+
+<table class="table">
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col"  th:text="#{label.id}"></th>
+        <th scope="col"  th:text="#{label.topic}"></th>
+        <th scope="col" th:text="#{label.start}"></th>
+        <th scope="col" th:text="#{label.end}"></th>
+
+        <th scope="col" th:text="#{label.speaker}"></th>
+        <th scope="col" th:text="#{label.registered}"></th>
+        <th> </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <th:block th:each="speech : ${speeches}">
+
+        <tr>
+            <td th:text="${speech.id}">...</td>
+            <td th:text="${speech.topic}">...</td>
+            <td  th:text="${speech.startHour}">...</td>
+            <td th:text="${speech.endHour}">...</td>
+            <td th:text="${speech.speaker.username}">...</td>
+            <td th:text="${speech.visitors.size()}">...</td>
+            <td>    <span th:if="${!userSpeeches.contains(speech)}">
+                   <a th:href="@{/reservePlace(speechId=${speech.id})}" th:text="#{label.reserve}"></a>
+            </span>
+
+            </td>
+        </tr>
+    </th:block>
+    </tbody>
+
+</table>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </body>
 </html>

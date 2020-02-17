@@ -2,6 +2,8 @@ package com.conferences.service.impl;
 
 import com.conferences.entity.Role;
 import com.conferences.entity.User;
+import com.conferences.exception.LoginCredentialsException;
+import com.conferences.exception.UserIsRegisteredException;
 import com.conferences.exception.ValidationException;
 import com.conferences.repository.UserRepository;
 import com.conferences.service.Encryptor;
@@ -49,40 +51,40 @@ public class UserServiceImplTest {
         reset(userRepository, validator, passwordEncryptor);
     }
 
-    @Test
-    public void whenThereISNotSuchUserLoginShouldReturnOptionalEmpty() {
-        when(userRepository.findUserByUsername(anyString())).thenReturn(Optional.empty());
-        Optional<User> user = service.login(USERNAME, PASSWORD);
+    @Test(expected = LoginCredentialsException.class)
+    public void whenPasswordIsWrongShouldBeException() {
+        when(userRepository.findUserByUsername(anyString())).thenReturn(Optional.of(USER));
+        when(passwordEncryptor.matches(any(), any())).thenReturn(false);
 
-        Assert.assertFalse(user.isPresent());
+        User user = service.login(USERNAME, PASSWORD);
 
         verify(userRepository).findUserByUsername(eq(USERNAME));
-        verifyZeroInteractions(passwordEncryptor);
+        verify(passwordEncryptor).matches(any(), any());
 
     }
 
-    @Test
-    public void whenUserPasswordInIncorrectUseShouldNotLogin(){ //TODO language /pagination url = handle /// test it
-        when(userRepository.findUserByUsername(anyString())).thenReturn(Optional.of(USER));
-        when(passwordEncryptor.matches(any(),any())).thenReturn(false);
+    @Test(expected = LoginCredentialsException.class)
+    public void whenThereIsNoSuchUserInDatabaseShouldBeException() {
+        when(userRepository.findUserByUsername(anyString())).thenReturn(Optional.empty());
+        when(passwordEncryptor.matches(any(), any())).thenReturn(true);
 
-        Optional<User> user = service.login(USERNAME, PASSWORD);
+        User user = service.login(USERNAME, PASSWORD);
 
 
-        Assert.assertFalse(user.isPresent());
         verify(userRepository).findUserByUsername(eq(USERNAME));
+        when(passwordEncryptor.matches(any(),any()));
     }
 
     @Test
     public void whenCredentialsAreVerifiedLoginShouldReturnTrue() {
-
         when(userRepository.findUserByUsername(anyString())).thenReturn(Optional.of(USER));
         when(passwordEncryptor.matches(any(), any())).thenReturn(true);
-        Optional<User> user = service.login(USERNAME, PASSWORD);
+      User user = service.login(USERNAME, PASSWORD);
 
-        Assert.assertTrue(user.isPresent());
+        Assert.assertEquals(USER,user);
 
         verify(userRepository).findUserByUsername(eq(USERNAME));
+        verify(passwordEncryptor).matches(any(), any());
 
     }
 
@@ -97,16 +99,22 @@ public class UserServiceImplTest {
         verify(userRepository).findUserByUsername(eq(USERNAME));
     }
 
-    @Test(expected = ValidationException.class)
-    public void userShouldNotRegisterIfUserWithSuchUsernameExists() {
-        doNothing().when(validator).validate(any(), any());
-        when(userRepository.findUserByUsername(any())).thenReturn(Optional.of(USER));
+    @Test(expected = UserIsRegisteredException.class)
+    public void ifUserIsAlreadyInDatabaseShouldBeException(){
+        doNothing().when(validator).validate(USERNAME,PASSWORD);
+        when(userRepository.findUserByUsername(USERNAME)).thenReturn(Optional.of(USER));
 
-        service.register(USERNAME, PASSWORD);
+        service.register(USERNAME,PASSWORD);
 
-        verify(validator).validate(USERNAME, PASSWORD);
-        verify(userRepository).findUserByUsername(eq(USERNAME));
+        verify(userRepository).findUserByUsername(USERNAME);
+
     }
+
+
+
+
+
+
 
 
 }

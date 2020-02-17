@@ -1,7 +1,6 @@
 package com.conferences.controller;
 
 import com.conferences.entity.User;
-import com.conferences.exception.ValidationException;
 import com.conferences.service.ConferenceService;
 import com.conferences.service.UserService;
 import lombok.AllArgsConstructor;
@@ -20,40 +19,30 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Optional;
-
-import static java.lang.String.format;
 
 
 @Controller
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class AuthorizationController {
+public class AuthorizationController extends AbstractController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationController.class);
     private final UserService userService;
     private final ConferenceService conferenceService;
-
+    private final UserBean userBean;
 
     @GetMapping(value = {"/"})
-    public ModelAndView login() {
+    public ModelAndView getLoginPage() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("start");
-
 
         return modelAndView;
     }
 
     @GetMapping(value = {"/login"})
-    public ModelAndView getBackPage() {
+    public ModelAndView getConferencesPage() {
         ModelAndView modelAndView = new ModelAndView();
-        RequestAttributes requestAttributes = RequestContextHolder
-                .currentRequestAttributes();
 
-        ServletRequestAttributes attributes = (ServletRequestAttributes) requestAttributes;
-        HttpServletRequest request = attributes.getRequest();
-
-        User user = (User) request.getSession().getAttribute("user");
-
+        User user = userBean.getUser();
         if (user != null) {
             modelAndView.addObject("conferences", conferenceService.findComingConferences("1"));
             modelAndView.addObject("pageNum", 1);
@@ -65,50 +54,36 @@ public class AuthorizationController {
         return modelAndView;
 
     }
+
     @GetMapping(value = {"/conferences"})
-    public ModelAndView conferencePage(){
+    public ModelAndView getComingConferencesPage(HttpSession session) {
         ModelAndView modelAndView = new ModelAndView();
 
-        RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
-        ServletRequestAttributes attributes = (ServletRequestAttributes) requestAttributes;
-        HttpServletRequest request = attributes.getRequest();
+
         modelAndView.addObject("conferences", conferenceService.findComingConferences("1"));
         modelAndView.addObject("pageNumber", 1);
-        User user = (User) request.getSession().getAttribute("user");
+        User user = userBean.getUser();
 
-        modelAndView.setViewName(user.getRole().name().toLowerCase()+"/conferences");
+        modelAndView.setViewName(user.getRole().name().toLowerCase() + "/conferences");
         return modelAndView;
 
     }
 
     @PostMapping(value = {"/conferences"})
-    public ModelAndView authorization(@RequestParam("username") String username, @RequestParam("password") String password) {
+    public ModelAndView LoggingIn(@RequestParam("username") String username, @RequestParam("password") String password) {
         ModelAndView modelAndView = new ModelAndView();
-        Optional<User> user = userService.login(username, password);
-        if (user.isPresent()) {
-            RequestAttributes requestAttributes = RequestContextHolder
-                    .currentRequestAttributes();
 
-            ServletRequestAttributes attributes = (ServletRequestAttributes) requestAttributes;
-            HttpServletRequest request = attributes.getRequest();
-            request.getSession().setAttribute("user", user.get());
-            modelAndView.addObject("conferences", conferenceService.findComingConferences("1"));
-            modelAndView.addObject("pageNum", 1);
+        User user = userService.login(username, password);
+         userBean.setUser(user);
+        modelAndView.addObject("conferences", conferenceService.findComingConferences("1"));
+        modelAndView.addObject("pageNum", 1);
+        modelAndView.setViewName(user.getRole().name().toLowerCase() + "/conferences");
 
-            modelAndView.setViewName(user.get().getRole().name().toLowerCase() + "/conferences");
-
-            LOGGER.info(format("user with username [%s] and password [%s]} logged in ", username, password));
-
-        } else {
-            modelAndView.addObject("error", "wrong credentials");
-            modelAndView.setViewName("start");
-            LOGGER.info(format("user with username [%s] and password [%s] failed in logging in  ", username, password));
-        }
         return modelAndView;
     }
 
     @GetMapping(value = "/registration")
-    public ModelAndView register() {
+    public ModelAndView registerPage() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("registration");
 
@@ -118,25 +93,12 @@ public class AuthorizationController {
     @RequestMapping(value = {"/register"})
     public ModelAndView registration(@RequestParam("username") String username, @RequestParam("password") String password) {
         ModelAndView modelAndView = new ModelAndView();
-        try {
-            User user = userService.register(username, password);
+        User user = userService.register(username, password);
+        userBean.setUser(user);
+        modelAndView.addObject("conferences", conferenceService.findComingConferences("1"));
+        modelAndView.addObject("pageNum", 1);
+        modelAndView.setViewName(user.getRole().name().toLowerCase() + "/conferences");
 
-            modelAndView.addObject("conferences", conferenceService.findComingConferences("1"));
-            modelAndView.addObject("pageNumber", 1);
-
-            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-            HttpSession session = attr.getRequest().getSession();
-            session.setAttribute("user", user);
-
-            modelAndView.setViewName(user.getRole().name().toLowerCase() + "/conferences");
-
-            LOGGER.info(format("user with username [%s] and password [%s] registered successfully", username, password));
-
-            return modelAndView;
-        } catch (ValidationException e) {
-            modelAndView.addObject("error", e.getMessage());
-            modelAndView.setViewName("error");
-            return modelAndView;
-        }
+        return modelAndView;
     }
 }

@@ -3,8 +3,8 @@ package com.conferences.service.impl;
 
 import com.conferences.entity.Role;
 import com.conferences.entity.User;
+import com.conferences.exception.LoginCredentialsException;
 import com.conferences.exception.UserIsRegisteredException;
-import com.conferences.exception.ValidationException;
 import com.conferences.repository.UserRepository;
 import com.conferences.service.UserService;
 import com.conferences.service.Validator;
@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class UserServiceImpl extends AbstractService<User,UserRepository>implements UserService {
+public class UserServiceImpl extends AbstractService<User, UserRepository> implements UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -39,7 +39,7 @@ public class UserServiceImpl extends AbstractService<User,UserRepository>impleme
     }
 
     @Override
-    public Optional<User> login(String username, String password) {
+    public User login(String username, String password) {
 
         Optional<User> byUsername = userRepository.findUserByUsername(username);
         boolean loggedIn = false;
@@ -47,7 +47,11 @@ public class UserServiceImpl extends AbstractService<User,UserRepository>impleme
             loggedIn = bCryptPasswordEncoder.matches(password, byUsername.get().getPassword());
         }
 
-        return loggedIn ? byUsername : Optional.empty();
+        if (!loggedIn) {
+            throw new LoginCredentialsException("start");
+        }
+
+        return byUsername.get();
     }
 
     @Override
@@ -56,10 +60,10 @@ public class UserServiceImpl extends AbstractService<User,UserRepository>impleme
     }
 
     @Override
-    public void deleteReservation(String userId,String speechId) {
-        int userID = getParsedOctalNumberOrRedirect(userId,"userSpeeches");
-        int speechID = getParsedOctalNumberOrRedirect(speechId,"userSpeeches");
-        userRepository.deleteReservation(userID,speechID);
+    public void deleteReservation(String userId, String speechId) {
+        int userID = getParsedOctalNumberOrRedirect(userId, "userSpeeches");
+        int speechID = getParsedOctalNumberOrRedirect(speechId, "userSpeeches");
+        userRepository.deleteReservation(userID, speechID);
     }
 
 

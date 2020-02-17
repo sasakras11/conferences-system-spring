@@ -8,19 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpSession;
 
 
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @Controller
-public class ConferencesController {
+public class ConferencesController extends AbstractController{
 
     private final ConferenceService conferenceService;
-
+     private final UserBean userBean;
 
     @GetMapping(value = "/pageOfComing")
     public ModelAndView toPage(@RequestParam("template") String template, @RequestParam("page") String page) {
@@ -46,10 +42,7 @@ public class ConferencesController {
         public ModelAndView toFinishedConferences(){
 
         ModelAndView modelAndView = new ModelAndView();
-
-       ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-       HttpSession session = attr.getRequest().getSession();
-          User user = (User) session.getAttribute("user");
+       User user = userBean.getUser();
        modelAndView.addObject("conferences",conferenceService.findFinishedConferences("1"));
        modelAndView.addObject("pageNum",1);
 
@@ -61,14 +54,10 @@ public class ConferencesController {
     public ModelAndView toComingConferences() {
 
         ModelAndView modelAndView = new ModelAndView();
-
-        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        HttpSession session = attr.getRequest().getSession();
-        User user = (User) session.getAttribute("user");
+        User user = userBean.getUser();
         modelAndView.addObject("conferences", conferenceService.findComingConferences("1"));
         modelAndView.addObject("pageNum", 1);
-        session.setAttribute("conferencesType", "/pageOfComing");
-
+           setSessionAttribute("conferencesType", "/pageOfComing");
         modelAndView.setViewName(user.getRole().name().toLowerCase() + "/conferences");
 
         return modelAndView;
