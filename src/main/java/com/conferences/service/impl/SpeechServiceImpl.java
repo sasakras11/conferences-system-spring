@@ -44,12 +44,13 @@ public class SpeechServiceImpl extends AbstractService<Speech, SpeechRepository>
     public Speech editSpeechAndGet(String topic,
                                    String startHour,
                                    String endHour,
-                                   String suggestedTopic, String id) {
+                                   String suggestedTopic,
+                                   String id) {
 
         Speech speech = findByIdIfPresentOrRedirect(id, speechRepository, VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED);
 
-        Optional.ofNullable(suggestedTopic).ifPresent(x->
-                speech.setSuggestedTopic(getValidatedNameOrRedirect(suggestedTopic,VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED)));
+            Optional.ofNullable(suggestedTopic).ifPresent(x ->
+                    speech.setSuggestedTopic(getValidatedNameOrRedirect(suggestedTopic, VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED)));
         Optional.ofNullable(topic).ifPresent(x ->
                 speech.setTopic(getValidatedNameOrRedirect(topic,VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED)));
         Optional.ofNullable(startHour).ifPresent(x ->
@@ -58,7 +59,6 @@ public class SpeechServiceImpl extends AbstractService<Speech, SpeechRepository>
                 speech.setEndHour(getValidEndHourOrRedirect(startHour,endHour,VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED)));
 
         speechRepository.save(speech);
-
         return speech;
 
     }

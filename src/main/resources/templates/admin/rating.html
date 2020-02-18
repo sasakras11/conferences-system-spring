@@ -3,10 +3,9 @@
 <head>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Title</title>
+    <title>Rating</title>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
     <link rel="stylesheet" type="text/css" href="conferences.css">
 
 </head>
@@ -22,7 +21,7 @@
                            role="tab" aria-controls="nav-home" aria-selected="true" th:href="@{/coming}"
                            th:text="#{label.coming}"></a>
                         <a class="nav-item nav-link active" data-toggle="tab"
-                           role="tab" aria-controls="nav-home" aria-selected="true" th:href="@{/ratingPage}"> ratings</a>
+                           role="tab" aria-controls="nav-home" aria-selected="true" th:text="#{label.rating}" th:href="@{/ratingPage}"></a>
                         <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab"
                            role="tab" aria-controls="nav-profile" aria-selected="false" th:href="@{/finished}"
                            th:text="#{label.finished}"></a>
@@ -34,14 +33,14 @@
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                         <table class="table" cellspacing="0">
-                            <thead>
+                            <thead class="thead-dark">
                             <tr>
-                                <th>id</th>
-                                <th>speaker</th>
+                                <th th:text="#{label.id}"></th>
+                                <th th:text="#{label.speaker}"></th>
                                 <th></th>
-                                <th>rating</th>
+                                <th th:text="#{label.rating}">rating</th>
                                 <th></th>
-                                <th>bonuses</th>
+                                <th th:text="#{label.bonuses}">bonuses</th>
 
                             </tr>
                             </thead>
@@ -54,7 +53,7 @@
                                     <form th:action="@{/editRating}">
                                        <td><input type="hidden" name="ratingId" id="ratingId" th:value="${rat.id}"></td>
                                    <td>  <input type="text" name="ratingMark" th:placeholder="${rat.rating}"></td>
-                                        <td>   <input type="submit" value="edit"></td>
+                                        <td>   <input type="submit" th:value="#{label.edit}"></td>
                                     </form>
                                    <td th:text="${rat.getBonuses()}"></td>
                                 </tr>

@@ -31,7 +31,8 @@ public class Speech {
     private String topic;
 
     @Column(name = "suggested_topic")
-    @Length(max = 200, min = 4)
+
+    @Length(max = 200,min = 4)
     private String suggestedTopic;
 
     @Column(name = "start_hour")

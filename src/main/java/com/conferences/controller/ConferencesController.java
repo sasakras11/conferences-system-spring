@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @Controller
-public class ConferencesController extends AbstractController{
+public class ConferencesController {
 
     private final ConferenceService conferenceService;
      private final UserBean userBean;
@@ -57,7 +57,7 @@ public class ConferencesController extends AbstractController{
         User user = userBean.getUser();
         modelAndView.addObject("conferences", conferenceService.findComingConferences("1"));
         modelAndView.addObject("pageNum", 1);
-           setSessionAttribute("conferencesType", "/pageOfComing");
+
         modelAndView.setViewName(user.getRole().name().toLowerCase() + "/conferences");
 
         return modelAndView;

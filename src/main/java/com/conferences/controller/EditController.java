@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @Controller
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class EditController extends AbstractController{
+public class EditController{
 
 
     private final UserBean userBean;
@@ -43,7 +43,8 @@ public class EditController extends AbstractController{
 
     @RequestMapping(value = {"/edit"})
     public ModelAndView editConference(@RequestParam(value = "date") String date,
-                                       @RequestParam(value = "name") String name, @RequestParam("conferenceId") String id) {
+                                       @RequestParam(value = "name") String name,
+                                       @RequestParam("conferenceId") String id) {
 
         ModelAndView modelAndView = new ModelAndView();
         User user = userBean.getUser();
@@ -71,8 +72,8 @@ public class EditController extends AbstractController{
     public ModelAndView editSpeech(@RequestParam(value = "topic", required = false) String topic,
                                    @RequestParam(value = "startHour", required = false) String startHour,
                                    @RequestParam(value = "endHour", required = false) String endHour,
-                                   @RequestParam("id") String id,
-                                   @RequestParam("suggestedTopic") String suggestedTopic) {
+                                   @RequestParam(value = "suggestedTopic",required = false) String suggestedTopic,
+                                   @RequestParam("id") String id) {
 
         ModelAndView modelAndView = new ModelAndView();
         Speech speech = speechService.editSpeechAndGet(topic, startHour, endHour, suggestedTopic, id);

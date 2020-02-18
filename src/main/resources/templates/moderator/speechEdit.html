@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>EditSpeech</title>
 </head>
 <body>
 <form action="#" th:action="@{/editSpeech}">
     <input type="hidden" id="id" name = "id" th:value="${speech.id}"/>
+
+    <label for="topic" class="text-info" th:text="#{label.topic}"></label>
     <input type="text" id="topic" name = "topic" th:placeholder="${speech.topic}"/>
-    <input type="text" id="suggestedTopic"  name = "suggestedTopic" th:placeholder="${speech.suggestedTopic}"/>
-    <input type="text" id="startHour" name = "startHour"  th:placeholder="${speech.startHour}"/>
-    <input type="text" id="endHour"  name = "endHour" th:placeholder="${speech.endHour}"/>
-    <input type="submit">
+    <label for="startHour" class="text-info" th:text="#{label.start}"></label>
+    <input type="text" id="startHour" name = "startHour" th:placeholder="${speech.startHour}"/>
+    <label for="endHour" class="text-info" th:text="#{label.end}"></label>
+    <input type="text"  id="endHour" name = "endHour" th:placeholder="${speech.endHour}"/>
+
+    <button type="submit" class="btn btn-info btn-md" th:text="#{label.confirm}"></button>
 </form>
 </body>
 </html>

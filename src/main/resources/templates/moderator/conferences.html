@@ -3,10 +3,9 @@
 <head>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Title</title>
+    <title>Conferences</title>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
     <link rel="stylesheet" type="text/css" href="conferences.css">
 
 </head>
@@ -26,12 +25,13 @@
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                         <table class="table" cellspacing="0">
-                            <thead>
+                            <thead class="thead-dark">
                             <tr>
-                                <th>id</th>
-                                <th>name</th>
-                                <th>date</th>
-                                <th>address</th>
+                                <th th:text="#{label.id}"></th>
+                                <th th:text="#{label.name}"></th>
+                                <th th:text="#{label.date}"></th>
+                                <th th:text="#{label.address}"></th>
+                                <th></th>
                                 <th></th>
                                 <th></th>
 

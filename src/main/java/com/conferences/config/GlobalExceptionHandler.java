@@ -12,11 +12,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpSession;
 
 @ControllerAdvice
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -28,23 +25,15 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(OctalNumberParseException.class)
-    public ModelAndView handleException(OctalNumberParseException ex) {
+    public ModelAndView handleOctalNumberException(OctalNumberParseException ex) {
         ModelAndView modelAndView = new ModelAndView();
         User user = userBean.getUser();
-
-
-        switch (ex.getMessage()) {
-
-            case "rating":
-                modelAndView.addObject("rating", ratingService.findAll());
-                break;
-            case "conferences":
-                modelAndView.addObject("conferences", conferenceService.findComingConferences("1"));
-                modelAndView.addObject("pageNum", 1);
-                break;
-
+        if (ex.getMessage().equals("rating")) {
+            modelAndView.addObject("rating", ratingService.findAll());
+        } else {
+            modelAndView.addObject("conferences", conferenceService.findComingConferences("1"));
+            modelAndView.addObject("pageNum", 1);
         }
-
 
         modelAndView.setViewName(user.getRole().name().toLowerCase() + "/" + ex.getMessage());
 
@@ -57,16 +46,15 @@ public class GlobalExceptionHandler {
         ModelAndView modelAndView = new ModelAndView();
         User user = userBean.getUser();
 
-        switch (ex.getMessage()) {
-            case "conferences":
-                modelAndView.addObject("conferences", conferenceService.findComingConferences("1"));
-                modelAndView.addObject("pageNum", 1);
-                modelAndView.setViewName(user.getRole().name().toLowerCase() + "/" + ex.getMessage());
-                break;
-
-            default: modelAndView.setViewName(ex.getMessage());
-
+        if(ex.getMessage().equals("conferences")){
+            modelAndView.addObject("conferences", conferenceService.findComingConferences("1"));
+            modelAndView.addObject("pageNum", 1);
+            modelAndView.setViewName(user.getRole().name().toLowerCase() + "/" + ex.getMessage());
         }
+        else{
+            modelAndView.setViewName(user.getRole().name().toLowerCase()+"/"+ex.getMessage());
+        }
+
 
         return modelAndView;
     }
@@ -86,7 +74,6 @@ public class GlobalExceptionHandler {
         modelAndView.setViewName(ex.getMessage());
         return modelAndView;
     }
-
 
 
 }

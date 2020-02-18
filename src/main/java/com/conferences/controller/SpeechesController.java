@@ -19,7 +19,7 @@ import java.util.List;
 
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @Controller
-public class SpeechesController extends AbstractController{
+public class SpeechesController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SpeechesController.class);
     private final SpeechService speechService;
@@ -61,8 +61,9 @@ public class SpeechesController extends AbstractController{
 
         ModelAndView modelAndView  = new ModelAndView();
         User user = userBean.getUser();
+        modelAndView.addObject("userName",user.getUsername());
         modelAndView.addObject("speeches",speechService.findAllByUserId(user.getUserId()));
-        modelAndView.setViewName("userSpeeches");
+        modelAndView.setViewName(user.getRole().name().toLowerCase()+"/userSpeeches");
 
         return modelAndView;
 
@@ -75,7 +76,7 @@ public class SpeechesController extends AbstractController{
         User user = userBean.getUser();
         userService.deleteReservation(user.getUserId().toString(),speechId);
         modelAndView.addObject("speeches",speechService.findAllByUserId(user.getUserId()));
-        modelAndView.setViewName("userSpeeches");
+        modelAndView.setViewName(user.getRole().name().toLowerCase()+"/userSpeeches");
         return modelAndView;
 
 

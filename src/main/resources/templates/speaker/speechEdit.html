@@ -1,14 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>EditSpeech</title>
 </head>
 <body>
 <form action="#" th:action="@{/editSpeech}">
     <input type="hidden" id="id" name = "id" th:value="${speech.id}"/>
-    <input type="text" id="suggestedTopic"  name = "suggestedTopic" th:placeholder="${speech.suggestedTopic}"/>
-    <input type="submit">
+
+
+    <label for="suggestedTopic" th:text="#{label.suggestTopic}"  class="text-info"></label>
+    <input type="text" id="suggestedTopic" name = "suggestedTopic" th:placeholder="${speech.suggestedTopic}"/>
+
+    <button type="submit" class="btn btn-info btn-md" th:text="#{label.confirm}"></button>
 </form>
 </body>
 </html>
+
+
+
+

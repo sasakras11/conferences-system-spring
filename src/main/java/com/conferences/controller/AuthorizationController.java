@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class AuthorizationController extends AbstractController {
+public class AuthorizationController  {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationController.class);
     private final UserService userService;
