@@ -12,7 +12,7 @@ public interface SpeechService {
 
     void save(Speech speech);
 
-    List<Speech> findAllByConference(int id);
+    List<Speech> findAllByConferenceId(String id);
 
     List<Speech> findAllByUserId(Integer userId);
 

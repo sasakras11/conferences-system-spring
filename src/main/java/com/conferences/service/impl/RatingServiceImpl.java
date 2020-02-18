@@ -42,7 +42,6 @@ public class RatingServiceImpl extends AbstractService<Rating,RatingRepository> 
     public void changeSpeakerRating(String  ratingId,String ratingMark) {
 
         int mark = getParsedOctalNumberOrRedirect(ratingMark,"rating");
-
         Rating rating = findByIdIfPresentOrRedirect(ratingId,ratingRepository,"rating");
         rating.setRating(mark);
         ratingRepository.save(rating);

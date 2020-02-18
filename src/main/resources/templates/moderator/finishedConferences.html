@@ -46,7 +46,7 @@
                                     <td th:text="${conference.date}">...</td>
                                     <td colspan="2" th:text="${conference.location.address}">...</td>
                                     <td>
-                                        <a th:href="@{/speeches(conferenceId=${conference.conferenceId})}" th:text="#{label.speeches}">speeches</a>
+                                        <a th:href="@{/finishedSpeeches(conferenceId=${conference.conferenceId})}" th:text="#{label.speeches}">speeches</a>
                                     </td>
                                 </tr>
                             </th:block>

@@ -19,12 +19,6 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class ConferenceServiceImplTest {
 
-
-    List<Conference> finishedConferences = new ArrayList<>();
-    List<Conference> comingConferences = new ArrayList<>();
-
-
-
     @Mock
     private ConferenceRepository conferenceRepository ;
 

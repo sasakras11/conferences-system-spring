@@ -16,7 +16,6 @@ import java.util.Optional;
 @Service
 public class SpeechServiceImpl extends AbstractService<Speech, SpeechRepository> implements SpeechService {
 
-
     private static final String VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED = "conferences";
     private final SpeechRepository speechRepository;
 
@@ -31,9 +30,9 @@ public class SpeechServiceImpl extends AbstractService<Speech, SpeechRepository>
     }
 
     @Override
-    public List<Speech> findAllByConference(int id) {
-
-        return speechRepository.findAllByConference_ConferenceId(id);
+    public List<Speech> findAllByConferenceId(String  id) {
+    int validatedId = getParsedOctalNumberOrRedirect(id,VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED);
+        return speechRepository.findAllByConference_ConferenceId(validatedId);
     }
 
     @Override
@@ -47,39 +46,19 @@ public class SpeechServiceImpl extends AbstractService<Speech, SpeechRepository>
                                    String endHour,
                                    String suggestedTopic, String id) {
 
-
         Speech speech = findByIdIfPresentOrRedirect(id, speechRepository, VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED);
 
-        Optional.ofNullable(suggestedTopic).ifPresent(x->{
-            if (VALID_TOPIC.test(x)) {
-                speech.setSuggestedTopic(x);
-            } else {
-                throw new ValidationException(VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED);
-            }
-        });
-        Optional.ofNullable(topic).ifPresent(x -> {
-            if (VALID_TOPIC.test(x)) {
-                speech.setTopic(x);
-            } else {
-                throw new ValidationException(VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED);
-            }
-        });
-        Optional.ofNullable(startHour).ifPresent(x -> {
-            if (VALID_HOUR.test(Integer.parseInt(x))) {
-                speech.setStartHour(Integer.parseInt(x));
-            } else {
-                throw new ValidationException(VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED);
-            }
-        });
-        Optional.ofNullable(endHour).ifPresent(x -> {
-            if (VALID_HOUR.test(Integer.parseInt(x))) {
-                speech.setEndHour(Integer.parseInt(x));
-            } else {
-                throw new ValidationException(VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED);
-            }
-        });
+        Optional.ofNullable(suggestedTopic).ifPresent(x->
+                speech.setSuggestedTopic(getValidatedNameOrRedirect(suggestedTopic,VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED)));
+        Optional.ofNullable(topic).ifPresent(x ->
+                speech.setTopic(getValidatedNameOrRedirect(topic,VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED)));
+        Optional.ofNullable(startHour).ifPresent(x ->
+                speech.setStartHour(getValidHourOrRedirect(startHour,VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED)));
+        Optional.ofNullable(endHour).ifPresent(x ->
+                speech.setEndHour(getValidEndHourOrRedirect(startHour,endHour,VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED)));
 
         speechRepository.save(speech);
+
         return speech;
 
     }

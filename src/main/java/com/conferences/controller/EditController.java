@@ -77,7 +77,7 @@ public class EditController extends AbstractController{
         ModelAndView modelAndView = new ModelAndView();
         Speech speech = speechService.editSpeechAndGet(topic, startHour, endHour, suggestedTopic, id);
         User user = userBean.getUser();
-        modelAndView.addObject("speeches", speechService.findAllByConference(speech.getConference().getConferenceId()));
+        modelAndView.addObject("speeches", speechService.findAllByConferenceId(speech.getConference().getConferenceId().toString()));
         modelAndView.addObject("userSpeeches", speechService.findAllByUserId(user.getUserId()));
         modelAndView.addObject("userName",user.getUsername());
         modelAndView.setViewName(user.getRole().name().toLowerCase() + "/speeches");

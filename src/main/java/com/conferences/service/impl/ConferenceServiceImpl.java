@@ -2,7 +2,6 @@ package com.conferences.service.impl;
 
 import com.conferences.entity.Conference;
 import com.conferences.entity.ConferenceGroup;
-import com.conferences.exception.ValidationException;
 import com.conferences.repository.ConferenceRepository;
 import com.conferences.service.ConferenceService;
 import lombok.AllArgsConstructor;
@@ -21,7 +20,7 @@ public class ConferenceServiceImpl extends AbstractService<Conference, Conferenc
 
     private static final int ITEMS_PER_PAGE = 4;
 
-    private static final String CONFERENCES_VIEW = "conferences";
+    private static final String VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED = "conferences";
     private static final Logger LOGGER = LoggerFactory.getLogger(ConferenceServiceImpl.class);
 
     private final ConferenceRepository conferenceRepository;
@@ -40,7 +39,7 @@ public class ConferenceServiceImpl extends AbstractService<Conference, Conferenc
     }
 
     public int getSameOrValidPage(String page, ConferenceGroup conferenceGroup) {
-        int intPage = getParsedOctalNumberOrRedirect(page, CONFERENCES_VIEW);
+        int intPage = getParsedOctalNumberOrRedirect(page, VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED);
 
         Date date = new Date();
         int count = conferenceGroup == ConferenceGroup.COMING ?
@@ -59,29 +58,20 @@ public class ConferenceServiceImpl extends AbstractService<Conference, Conferenc
 
     @Override
     public Conference findById(String id) {
-        return findByIdIfPresentOrRedirect(id, conferenceRepository, CONFERENCES_VIEW);
+        return findByIdIfPresentOrRedirect(id, conferenceRepository, VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED);
     }
 
     @Override
     public void editConference(String name, String date, String conferenceId) {
-        if (name.length() > 3 && date.length() > 0) {
-            Date validatedDate = getParsedDateOrRedirect(date, CONFERENCES_VIEW);
-
-
-            Conference conference = findByIdIfPresentOrRedirect(conferenceId, conferenceRepository, CONFERENCES_VIEW);
-            conference.setDate(validatedDate);
-
-            if (VALID_TOPIC.test(name)) {
-                conference.setName(name);
-            } else {
-                throw new ValidationException(CONFERENCES_VIEW);
-            }
-
+            Conference conference = findByIdIfPresentOrRedirect(conferenceId, conferenceRepository, VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED);
+            conference.setDate(getParsedDateOrRedirect(date, VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED));
+            conference.setName(getValidatedNameOrRedirect(name, VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED));
             conferenceRepository.save(conference);
             LOGGER.info(String.format("updated conference with id [%s] - new name - [%s], date - [%s]", conferenceId, name, date));
 
         }
 
-    }
+
 }
+
 

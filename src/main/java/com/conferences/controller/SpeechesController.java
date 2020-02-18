@@ -28,13 +28,13 @@ public class SpeechesController extends AbstractController{
     private final UserBean userBean;
 
     @GetMapping(value = {"/speeches"})
-    public ModelAndView speeches(@RequestParam("conferenceId") int conferenceId) {
+    public ModelAndView speeches(@RequestParam("conferenceId") String conferenceId) {
 
         ModelAndView modelAndView = new ModelAndView();
         User user = userBean.getUser();
         modelAndView.addObject("userSpeeches",speechService.findAllByUserId(user.getUserId()));
         modelAndView.addObject("userName",user.getUsername());
-        modelAndView.addObject("speeches", speechService.findAllByConference(conferenceId));
+        modelAndView.addObject("speeches", speechService.findAllByConferenceId(conferenceId));
         modelAndView.setViewName(user.getRole().name().toLowerCase() + "/speeches");
 
         return modelAndView;
@@ -47,7 +47,7 @@ public class SpeechesController extends AbstractController{
         User user = userBean.getUser();
 
           Speech speech = speechService.reservePlaceAndGet(speechId,user);
-            modelAndView.addObject("speeches", speechService.findAllByConference(speech.getConference().getConferenceId()));
+            modelAndView.addObject("speeches", speechService.findAllByConferenceId(speech.getConference().getConferenceId().toString()));
             modelAndView.setViewName(user.getRole().name().toLowerCase() + "/speeches");
             modelAndView.addObject("userSpeeches",speechService.findAllByUserId(user.getUserId()));
             LOGGER.info(String.format("User %s reserved place in speech with id %s", user.getUsername(),speechId));
@@ -79,5 +79,13 @@ public class SpeechesController extends AbstractController{
         return modelAndView;
 
 
+    }
+    @RequestMapping(value = {"/finishedSpeeches"})
+    public ModelAndView finishedSpeeches(@RequestParam("conferenceId") String conferenceId){
+        ModelAndView modelAndView = new ModelAndView();
+        User user = userBean.getUser();
+        modelAndView.addObject("speeches",speechService.findAllByConferenceId(conferenceId));
+        modelAndView.setViewName(user.getRole().name().toLowerCase()+"/finishedSpeeches");
+        return modelAndView;
     }
 }
