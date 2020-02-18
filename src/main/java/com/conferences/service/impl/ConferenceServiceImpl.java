@@ -14,11 +14,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class ConferenceServiceImpl extends AbstractService<Conference,ConferenceRepository> implements ConferenceService {
+public class ConferenceServiceImpl extends AbstractService<Conference, ConferenceRepository> implements ConferenceService {
 
     private static final int ITEMS_PER_PAGE = 4;
 
@@ -41,7 +40,7 @@ public class ConferenceServiceImpl extends AbstractService<Conference,Conference
     }
 
     public int getSameOrValidPage(String page, ConferenceGroup conferenceGroup) {
-        int intPage = getParsedOctalNumberOrRedirect(page,CONFERENCES_VIEW);
+        int intPage = getParsedOctalNumberOrRedirect(page, CONFERENCES_VIEW);
 
         Date date = new Date();
         int count = conferenceGroup == ConferenceGroup.COMING ?
@@ -59,29 +58,30 @@ public class ConferenceServiceImpl extends AbstractService<Conference,Conference
     }
 
     @Override
-    public Conference findById(String  id) {
-        int validatedId = getParsedOctalNumberOrRedirect(id,CONFERENCES_VIEW);
-       return findByIdIfPresentOrRedirect(validatedId,conferenceRepository,CONFERENCES_VIEW);
+    public Conference findById(String id) {
+        return findByIdIfPresentOrRedirect(id, conferenceRepository, CONFERENCES_VIEW);
     }
 
     @Override
-    public void editConference(String name, String date,String conferenceId) {
-         if(name.length()>3 && date.length()>0){
-             Date validatedDate = getParsedDateOrRedirect(date,CONFERENCES_VIEW);
+    public void editConference(String name, String date, String conferenceId) {
+        if (name.length() > 3 && date.length() > 0) {
+            Date validatedDate = getParsedDateOrRedirect(date, CONFERENCES_VIEW);
 
-             Conference conference = findById(conferenceId);
-             conference.setDate(validatedDate);
-             conference.setName(name);
-             conferenceRepository.save(conference);
-             LOGGER.info(String.format("updated conference with id [%s] - new name - [%s], date - [%s]",conferenceId,name,date));
 
-         }
-         else {
-             LOGGER.warn(String.format("Editing conference with id [%s] went wrong. Name has length less then 4",conferenceId));
-             throw new ValidationException(CONFERENCES_VIEW);
-         }
+            Conference conference = findByIdIfPresentOrRedirect(conferenceId, conferenceRepository, CONFERENCES_VIEW);
+            conference.setDate(validatedDate);
+
+            if (VALID_TOPIC.test(name)) {
+                conference.setName(name);
+            } else {
+                throw new ValidationException(CONFERENCES_VIEW);
+            }
+
+            conferenceRepository.save(conference);
+            LOGGER.info(String.format("updated conference with id [%s] - new name - [%s], date - [%s]", conferenceId, name, date));
+
+        }
+
     }
-
-
 }
 

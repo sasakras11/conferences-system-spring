@@ -45,7 +45,7 @@ public class Speech {
     private Integer endHour;
 
     @JoinColumn(name = "user_id")
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private User speaker;
 
 

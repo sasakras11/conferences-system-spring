@@ -33,8 +33,8 @@ public class SpeechesController extends AbstractController{
         ModelAndView modelAndView = new ModelAndView();
         User user = userBean.getUser();
         modelAndView.addObject("userSpeeches",speechService.findAllByUserId(user.getUserId()));
-        List<Speech> speeches = speechService.findAllByConference(conferenceId);
-        modelAndView.addObject("speeches", speeches);
+        modelAndView.addObject("userName",user.getUsername());
+        modelAndView.addObject("speeches", speechService.findAllByConference(conferenceId));
         modelAndView.setViewName(user.getRole().name().toLowerCase() + "/speeches");
 
         return modelAndView;
@@ -45,26 +45,14 @@ public class SpeechesController extends AbstractController{
     public ModelAndView reservePlace(@RequestParam("speechId") String speechId) {
         ModelAndView modelAndView = new ModelAndView();
         User user = userBean.getUser();
-        try {
-            Speech speech = speechService.findById(speechId);
-            List<User> visitors  = speech.getVisitors();
-            visitors.add(user);
-            speechService.save(speech);
+
+          Speech speech = speechService.reservePlaceAndGet(speechId,user);
             modelAndView.addObject("speeches", speechService.findAllByConference(speech.getConference().getConferenceId()));
             modelAndView.setViewName(user.getRole().name().toLowerCase() + "/speeches");
             modelAndView.addObject("userSpeeches",speechService.findAllByUserId(user.getUserId()));
             LOGGER.info(String.format("User %s reserved place in speech with id %s", user.getUsername(),speechId));
 
-        } catch (Exception e) {
-            LOGGER.warn(String.format("Exception when reserving place in speech with id %s", speechId));
-            modelAndView.addObject("conferences", conferenceService.findComingConferences("1"));
-            modelAndView.addObject("pageNumber", 1);
 
-            modelAndView.setViewName(user.getRole().name().toLowerCase() + "/conferences");
-
-
-
-        }
         return modelAndView;
 
     }

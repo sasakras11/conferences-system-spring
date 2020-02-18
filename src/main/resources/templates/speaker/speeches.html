@@ -11,6 +11,7 @@
             border: 1px solid black;
         }
     </style>
+    <link rel="stylesheet" href="../../css/bootstrap.css">
 </head>
 <body>
 
@@ -34,7 +35,6 @@
     <tbody>
 
     <th:block th:each="speech : ${speeches}">
-
         <tr>
             <td th:text="${speech.id}">...</td>
             <td th:text="${speech.topic}">...</td>
@@ -42,16 +42,14 @@
             <td th:text="${speech.endHour}">...</td>
             <td th:text="${speech.speaker.username}">...</td>
             <td th:text="${speech.visitors.size()}">...</td>
-            <td>    <span th:if="${!userSpeeches.contains(speech)}">
-               <span th:if="${!session.user.getRole().name().equals(speech.speaker.role.name())}">
+            <td><span th:if="${!userSpeeches.contains(speech)}">
+               <span th:if="${!userName.equals(speech.speaker.username)}">
                    <a th:href="@{/reservePlace(speechId=${speech.id})}" th:text="#{label.reserve}"></a>
                </span>
-
             </span>
-
             </td>
             <td>
-                <span th:if="${session.user.username.equals(speech.speaker.username)}">
+                <span th:if="${userName.equals(speech.speaker.username)}">
                     <a th:href="@{/editSpeechPage(speechId=${speech.id})}" >edit</a></span>
             </td>
         </tr>

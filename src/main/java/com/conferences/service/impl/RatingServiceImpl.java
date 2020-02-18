@@ -41,14 +41,13 @@ public class RatingServiceImpl extends AbstractService<Rating,RatingRepository> 
     @Override
     public void changeSpeakerRating(String  ratingId,String ratingMark) {
 
-        int ratingID = getParsedOctalNumberOrRedirect(ratingId,"rating");
         int mark = getParsedOctalNumberOrRedirect(ratingMark,"rating");
 
-        Rating rating = findByIdIfPresentOrRedirect(ratingID,ratingRepository,"rating");
+        Rating rating = findByIdIfPresentOrRedirect(ratingId,ratingRepository,"rating");
         rating.setRating(mark);
         ratingRepository.save(rating);
 
-        LOGGER.info(String.format("changed rating with id [%o] .New rating mark value - [%o]",ratingID,mark));
+        LOGGER.info(String.format("changed rating with id [%s] .New rating mark value - [%o]",ratingId,mark));
 
 
 

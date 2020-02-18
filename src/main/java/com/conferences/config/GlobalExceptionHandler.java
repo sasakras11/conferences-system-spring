@@ -1,5 +1,6 @@
 package com.conferences.config;
 
+import com.conferences.controller.UserBean;
 import com.conferences.entity.User;
 import com.conferences.exception.LoginCredentialsException;
 import com.conferences.exception.OctalNumberParseException;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpSession;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class GlobalExceptionHandler {
 
+    private final UserBean userBean;
     private final ConferenceService conferenceService;
     private final RatingService ratingService;
 
@@ -28,9 +30,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(OctalNumberParseException.class)
     public ModelAndView handleException(OctalNumberParseException ex) {
         ModelAndView modelAndView = new ModelAndView();
-        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        HttpSession session = attr.getRequest().getSession();
-        User user = (User) session.getAttribute("user");
+        User user = userBean.getUser();
+
 
         switch (ex.getMessage()) {
 
@@ -54,9 +55,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ValidationException.class)
     public ModelAndView handleValidationException(ValidationException ex) {
         ModelAndView modelAndView = new ModelAndView();
-        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        HttpSession session = attr.getRequest().getSession();
-        User user = (User) session.getAttribute("user");
+        User user = userBean.getUser();
 
         switch (ex.getMessage()) {
             case "conferences":

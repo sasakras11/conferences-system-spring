@@ -16,4 +16,7 @@ public interface SpeechService {
 
     List<Speech> findAllByUserId(Integer userId);
 
+    public Speech reservePlaceAndGet(String speechId ,User user);
+
+    public Speech editSpeechAndGet(String topic, String startHour, String endHour, String suggestedTopic, String id);
 }
