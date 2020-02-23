@@ -19,10 +19,8 @@ import java.util.List;
 public class ConferenceServiceImpl extends AbstractService<Conference, ConferenceRepository> implements ConferenceService {
 
     private static final int ITEMS_PER_PAGE = 4;
-
     private static final String VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED = "conferences";
     private static final Logger LOGGER = LoggerFactory.getLogger(ConferenceServiceImpl.class);
-
     private final ConferenceRepository conferenceRepository;
 
     @Override
@@ -63,15 +61,12 @@ public class ConferenceServiceImpl extends AbstractService<Conference, Conferenc
 
     @Override
     public void editConference(String name, String date, String conferenceId) {
-            Conference conference = findByIdIfPresentOrRedirect(conferenceId, conferenceRepository, VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED);
-            conference.setDate(getParsedDateOrRedirect(date, VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED));
-            conference.setName(getValidatedNameOrRedirect(name, VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED));
-            conferenceRepository.save(conference);
-            LOGGER.info(String.format("updated conference with id [%s] - new name - [%s], date - [%s]", conferenceId, name, date));
-
-        }
-
-
+        Conference conference = findByIdIfPresentOrRedirect(conferenceId, conferenceRepository, VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED);
+        conference.setDate(getParsedDateOrRedirect(date, VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED));
+        conference.setName(getValidatedNameOrRedirect(name, VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED));
+        conferenceRepository.save(conference);
+        LOGGER.info(String.format("updated conference with id [%s] - new name - [%s], date - [%s]", conferenceId, name, date));
+    }
 }
 
 

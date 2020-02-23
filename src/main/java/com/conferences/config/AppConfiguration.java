@@ -24,7 +24,6 @@ import java.util.Locale;
 @Configuration
 public class AppConfiguration extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
@@ -34,15 +33,17 @@ public class AppConfiguration extends WebSecurityConfigurerAdapter implements We
     public LocaleResolver localeResolver() {
         SessionLocaleResolver slr = new SessionLocaleResolver();
         slr.setDefaultLocale(Locale.US);
+
         return slr;
     }
+
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
         lci.setParamName("lang");
+
         return lci;
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -59,7 +60,6 @@ public class AppConfiguration extends WebSecurityConfigurerAdapter implements We
     public ClassLoaderTemplateResolver templateResolver() {
 
         var templateResolver = new ClassLoaderTemplateResolver();
-
         templateResolver.setPrefix("templates/");
         templateResolver.setCacheable(false);
         templateResolver.setSuffix(".html");
@@ -84,15 +84,11 @@ public class AppConfiguration extends WebSecurityConfigurerAdapter implements We
     public ViewResolver viewResolver() {
 
         var viewResolver = new ThymeleafViewResolver();
-
         viewResolver.setTemplateEngine(templateEngine());
         viewResolver.setCharacterEncoding("UTF-8");
 
         return viewResolver;
     }
-
-
-
 }
 
 

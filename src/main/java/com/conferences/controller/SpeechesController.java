@@ -6,22 +6,17 @@ import com.conferences.service.ConferenceService;
 import com.conferences.service.SpeechService;
 import com.conferences.service.UserService;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import java.util.List;
-
 
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @Controller
 public class SpeechesController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SpeechesController.class);
     private final SpeechService speechService;
     private final ConferenceService conferenceService;
     private final UserService userService;
@@ -41,7 +36,7 @@ public class SpeechesController {
 
     }
 
-    @RequestMapping(value = {"/reservePlace"})
+    @GetMapping(value = {"/reservePlace"})
     public ModelAndView reservePlace(@RequestParam("speechId") String speechId) {
         ModelAndView modelAndView = new ModelAndView();
         User user = userBean.getUser();
@@ -50,7 +45,6 @@ public class SpeechesController {
             modelAndView.addObject("speeches", speechService.findAllByConferenceId(speech.getConference().getConferenceId().toString()));
             modelAndView.setViewName(user.getRole().name().toLowerCase() + "/speeches");
             modelAndView.addObject("userSpeeches",speechService.findAllByUserId(user.getUserId()));
-            LOGGER.info(String.format("User %s reserved place in speech with id %s", user.getUsername(),speechId));
 
 
         return modelAndView;
@@ -70,7 +64,7 @@ public class SpeechesController {
 
 
     }
-    @RequestMapping(value = {"/deleteReservation"})
+    @GetMapping(value = {"/deleteReservation"})
      public ModelAndView  deleteReservation(@RequestParam("speechId") String speechId){
         ModelAndView modelAndView  = new ModelAndView();
         User user = userBean.getUser();
@@ -81,7 +75,7 @@ public class SpeechesController {
 
 
     }
-    @RequestMapping(value = {"/finishedSpeeches"})
+    @GetMapping(value = {"/finishedSpeeches"})
     public ModelAndView finishedSpeeches(@RequestParam("conferenceId") String conferenceId){
         ModelAndView modelAndView = new ModelAndView();
         User user = userBean.getUser();

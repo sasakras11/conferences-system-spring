@@ -2,10 +2,11 @@ package com.conferences.service.impl;
 
 import com.conferences.entity.Speech;
 import com.conferences.entity.User;
-import com.conferences.exception.ValidationException;
 import com.conferences.repository.SpeechRepository;
 import com.conferences.service.SpeechService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ public class SpeechServiceImpl extends AbstractService<Speech, SpeechRepository>
 
     private static final String VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED = "conferences";
     private final SpeechRepository speechRepository;
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpeechServiceImpl.class);
 
     @Override
     public Speech findById(String id) {
@@ -40,7 +42,6 @@ public class SpeechServiceImpl extends AbstractService<Speech, SpeechRepository>
         return speechRepository.findAllByVisitors_UserId(userId);
     }
 
-
     public Speech editSpeechAndGet(String topic,
                                    String startHour,
                                    String endHour,
@@ -59,8 +60,9 @@ public class SpeechServiceImpl extends AbstractService<Speech, SpeechRepository>
                 speech.setEndHour(getValidEndHourOrRedirect(startHour,endHour,VIEW_TO_RETURN_IF_EXCEPTION_HAPPENED)));
 
         speechRepository.save(speech);
-        return speech;
+        LOGGER.info(String.format("edited speech with id - [%s].New values topic - [%s], startHour - [%s], endHour - [%s] ,suggestedTopic - [%s]",id,topic,startHour,endHour,suggestedTopic));
 
+        return speech;
     }
 
     public Speech reservePlaceAndGet(String speechId ,User user){
@@ -69,7 +71,8 @@ public class SpeechServiceImpl extends AbstractService<Speech, SpeechRepository>
         List<User> visitors  = speech.getVisitors();
         visitors.add(user);
         speechRepository.save(speech);
+        LOGGER.info(String.format("user with username [%s] reserve place on speech with topic [%s]",user.getUsername(),speech.getTopic()));
+
         return speech;
     }
-
 }

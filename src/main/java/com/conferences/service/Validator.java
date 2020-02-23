@@ -1,6 +1,7 @@
 package com.conferences.service;
 
-import com.conferences.exception.ValidationException;
+import com.conferences.exception.NotValidPasswordException;
+import com.conferences.exception.NotValidUsernameException;
 import org.springframework.stereotype.Component;
 
 
@@ -15,18 +16,15 @@ public class Validator {
         validatePassword(password);
     }
 
-
     private void validateUsername(String str) {
         if (!str.matches(USERNAME_PATTERN)) {
-            throw new ValidationException("registration");
+            throw new NotValidUsernameException("registration");
         }
-
-
     }
 
     private void validatePassword(String str) {
         if (!str.matches(PASSWORD_PATTERN)) {
-            throw new ValidationException("registration");
+            throw new NotValidPasswordException("registration");
         }
     }
 }
