@@ -1,4 +1,4 @@
-# ConferencesProjectSpring
+# conferences-system-spring
 
 Задание:
 
