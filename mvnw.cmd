@@ -10,29 +10,7 @@
 @REM    https://www.apache.org/licenses/LICENSE-2.0
 @REM
 title %0
-@REM enable echoing by setting MAVEN_BATCH_ECHO to 'on'
-@if "%MAVEN_BATCH_ECHO%" == "on"  echo %MAVEN_BATCH_ECHO%
-
-@REM set %HOME% to equivalent of $HOME
-if "%HOME%" == "" (set "HOME=%HOMEDRIVE%%HOMEPATH%")
-
-@REM Execute a user defined script before this one
-if not "%MAVEN_SKIP_RC%" == "" goto skipRcPre
-@REM check for pre script, once with legacy .bat ending and once with .cmd ending
-if exist "%HOME%\mavenrc_pre.bat" call "%HOME%\mavenrc_pre.bat"
-if exist "%HOME%\mavenrc_pre.cmd" call "%HOME%\mavenrc_pre.cmd"
-:skipRcPre
-
-@setlocal
-
-set ERROR_CODE=0
-
-@REM To isolate internal variables from possible post scripts, we use another setlocal
-@setlocal
-
-@REM ==== START VALIDATION ====
-if not "%JAVA_HOME%" == "" goto OkJHome
-
+@REM 
 echo.
 echo Error: JAVA_HOME not found in your environment. >&2
 echo Please set the JAVA_HOME variable in your environment to match the >&2
