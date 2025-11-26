@@ -1,1 +1,1 @@
-# conferences-system-spring
+# conferences-system
