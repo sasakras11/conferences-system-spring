@@ -1,1 +1,1 @@
-# conferences-system
+# conferences
