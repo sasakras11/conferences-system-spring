@@ -3,5 +3,4 @@ target/
 build/
 
 ### VS Code ###
-.vscode/
-.mvn
+.vs
