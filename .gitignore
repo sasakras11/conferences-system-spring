@@ -1,9 +1,5 @@
 HELP.md
 target/
-!.m
-/dist/
-/nbdist/
-/.nb-gradle/
 build/
 
 ### VS Code ###
