@@ -30,11 +30,7 @@ public class AppConfiguration extends WebSecurityConfigurerAdapter implements We
     @Description("Thymeleaf template engine with Spring integration")
     public SpringTemplateEngine templateEngine() {
 
-        var templateEngine = new SpringTemplateEngine();
-        templateEngine.setTemplateResolver(templateResolver());
-
-        return templateEngine;
-    }
+    
 
     @Bean
     @Description("Thymeleaf view resolver")
