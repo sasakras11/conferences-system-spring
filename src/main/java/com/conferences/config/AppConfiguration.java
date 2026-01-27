@@ -24,8 +24,7 @@ import java.util.Locale;
 @Configuration
 public class AppConfiguration extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
-        return templateResolver;
-    }
+
 
     @Bean
     @Description("Thymeleaf template engine with Spring integration")
