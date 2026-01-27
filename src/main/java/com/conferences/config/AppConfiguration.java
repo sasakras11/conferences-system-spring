@@ -24,48 +24,6 @@ import java.util.Locale;
 @Configuration
 public class AppConfiguration extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(localeChangeInterceptor());
-    }
-
-    @Bean
-    public LocaleResolver localeResolver() {
-        SessionLocaleResolver slr = new SessionLocaleResolver();
-        slr.setDefaultLocale(Locale.US);
-
-        return slr;
-    }
-
-    @Bean
-    public LocaleChangeInterceptor localeChangeInterceptor() {
-        LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
-        lci.setParamName("lang");
-
-        return lci;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new Encryptor();
-    }
-
-    @Override
-    protected void configure(HttpSecurity security) throws Exception {
-        security.httpBasic().disable().csrf().disable();
-    }
-
-    @Bean
-    @Description("Thymeleaf template resolver serving HTML 5")
-    public ClassLoaderTemplateResolver templateResolver() {
-
-        var templateResolver = new ClassLoaderTemplateResolver();
-        templateResolver.setPrefix("templates/");
-        templateResolver.setCacheable(false);
-        templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode("HTML5");
-        templateResolver.setCharacterEncoding("UTF-8");
-
         return templateResolver;
     }
 
